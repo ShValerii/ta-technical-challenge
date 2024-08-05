@@ -13,7 +13,7 @@ public final class FileUtility {
     if (files != null && files.length > 0) {
       return files[0].getName().split("-")[1].substring(1);
     } else {
-      return null;
+      return "";
     }
   }
 
@@ -30,6 +30,6 @@ public final class FileUtility {
       throw new IllegalArgumentException(root + " is no directory.");
     }
     File[] files = root.listFiles(f -> p.matcher(f.getName()).matches());
-    return (files != null && files.length > 0) ? files : null;
+    return (files != null && files.length > 0) ? files : new File[]{};
   }
 }
