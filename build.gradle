@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+group = 'com.ta'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    agent {
+        canBeResolved = true
+        canBeConsumed = true
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    agent "org.aspectj:aspectjweaver:$aspectJVer"
+    implementation "io.appium:java-client:${appiumJavaVer}"
+    implementation 'org.apache.commons:commons-lang3:3.15.0'
+    implementation "io.github.bonigarcia:webdrivermanager:${driverManagerVer}"
+    testImplementation "org.seleniumhq.selenium:selenium-java:${seleniumVer}"
+    testImplementation "org.slf4j:slf4j-simple:${slf4jVer}"
+    testImplementation "org.slf4j:slf4j-api:${slf4jVer}"
+}
+
+test {
+    ignoreFailures = false
+    useJUnitPlatform()
+    jvmArgs = ["-javaagent:${configurations.agent.singleFile}"]
+}
