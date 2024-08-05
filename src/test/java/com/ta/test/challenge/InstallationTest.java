@@ -3,6 +3,7 @@ package com.ta.test.challenge;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Assertions;
@@ -27,6 +28,7 @@ public class InstallationTest {
 
   private static final Pattern pattern = Pattern.compile("^shift-v\\d+.\\d+.\\d+.\\d+.*$");
   private final Logger log = LoggerFactory.getLogger(InstallationTest.class);
+
   @Value("${shift.username}")
   private String username;
   @Value("${shift.password}")
@@ -35,6 +37,9 @@ public class InstallationTest {
   private String installCmd;
   @Value("${system.download.path}")
   private File downloadPath;
+  @Value("${shift.name.pattern}")
+  private Pattern pattern1;
+
   @Autowired
   private GoogleAcc googleAcc;
   @Autowired
@@ -50,7 +55,7 @@ public class InstallationTest {
       File file = FileUtility.firstFileMatching(downloadPath, pattern);
       Assertions.assertNotNull(file);
       URL url = Thread.currentThread().getContextClassLoader().getResource("install_shift.bat");
-      File batFile = new File(url.getPath());
+      File batFile = new File(Objects.requireNonNull(url).getPath());
       Process p = Runtime.getRuntime().exec(batFile.getAbsolutePath() + " " + file.getAbsolutePath());
       p.waitFor();
       log.atInfo().log("Batch file executed successfully.");

@@ -21,11 +21,15 @@ import com.ta.test.challenge.page.MainPage;
 import com.ta.test.challenge.page.SettingsPage;
 import com.ta.test.challenge.utility.FileUtility;
 
+import java.nio.file.Path;
+import java.util.regex.Pattern;
+
 @SpringBootTest
 @ContextConfiguration(classes = AppDriverConfig.class)
 @TestMethodOrder(OrderAnnotation.class)
 public class ShiftTest {
 
+  private static final Pattern pattern = Pattern.compile("^shift-v\\d+.\\d+.\\d+.\\d+.*$");
   private final Logger log = LoggerFactory.getLogger(ShiftTest.class);
   @Value("${shift.username}")
   private String username;
@@ -34,7 +38,7 @@ public class ShiftTest {
   @Value("${shift.name}")
   private String shiftName;
   @Value("${system.download.path}")
-  private String downloadPath;
+  private Path downloadPath;
 
   @Autowired
   private MainPage mainPage;
@@ -51,7 +55,7 @@ public class ShiftTest {
   @Order(2)
   public void verifyShiftVersion() {
     log.atInfo().log("verifyShiftVersion");
-    String downloadedVer = FileUtility.extractFileVersion(downloadPath, shiftName);
+    String downloadedVer = FileUtility.extractFileVersion(downloadPath.toFile(), pattern);
     log.atInfo().log("Downloaded Shift version is: " + downloadedVer);
     mainPage.clickToMainAccount();
     mainPage.clickToSettingsButton();
