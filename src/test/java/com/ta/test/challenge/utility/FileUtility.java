@@ -1,27 +1,20 @@
 package com.ta.test.challenge.utility;
 
 import java.io.File;
-import java.util.Objects;
 import java.util.regex.Pattern;
-
-import org.junit.jupiter.api.Assertions;
 
 public final class FileUtility {
 
-  //TODO rewrite using regexp
-  public static String extractFileVersion(String downloadFolder, String fileName) {
-    File folder = new File(downloadFolder);
-    File[] listOfFiles = folder.listFiles();
-    String downloadedVersion = "";
-    for (File file : Objects.requireNonNull(listOfFiles)) {
-      if (file.isFile() && file.getName().contains(fileName)) {
-        downloadedVersion = file.getName().split("-")[1];
-        downloadedVersion = downloadedVersion.substring(1);
-        Assertions.assertTrue(file.exists(), "Download not successful.");
-        break;
-      }
+  public static String extractFileVersion(File root, Pattern p) {
+    if (!root.isDirectory()) {
+      throw new IllegalArgumentException(root + " is no directory.");
     }
-    return downloadedVersion;
+    File[] files = root.listFiles(f -> p.matcher(f.getName()).matches());
+    if (files != null && files.length > 0) {
+      return files[0].getName().split("-")[1].substring(1);
+    } else {
+      return null;
+    }
   }
 
   public static File firstFileMatching(File root, Pattern p) {
@@ -30,5 +23,13 @@ public final class FileUtility {
     }
     File[] files = root.listFiles(f -> p.matcher(f.getName()).matches());
     return (files != null && files.length > 0) ? files[0] : null;
+  }
+
+  public static File[] filesMatching(File root, Pattern p) {
+    if (!root.isDirectory()) {
+      throw new IllegalArgumentException(root + " is no directory.");
+    }
+    File[] files = root.listFiles(f -> p.matcher(f.getName()).matches());
+    return (files != null && files.length > 0) ? files : null;
   }
 }
