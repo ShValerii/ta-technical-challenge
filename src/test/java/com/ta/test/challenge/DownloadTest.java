@@ -1,7 +1,6 @@
 package com.ta.test.challenge;
 
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +20,8 @@ import com.ta.test.challenge.config.ChromeDriverConfig;
 import com.ta.test.challenge.utility.DriverWrapper;
 import com.ta.test.challenge.utility.FileUtility;
 
+import io.qameta.allure.Step;
+
 @SpringBootTest(classes = ChromeDriverConfig.class)
 public class DownloadTest {
 
@@ -29,6 +30,7 @@ public class DownloadTest {
   private static final String DOWNLOAD_CHECKER_SCRIPT =
       "return document.querySelector('downloads-manager').shadowRoot"
           + ".querySelector('#downloadsList downloads-item').shadowRoot.querySelector('#progress').value";
+  private static final String CHROME_DOWNLOADS_TAB_PATH = "chrome://downloads";
   private final Logger log = LoggerFactory.getLogger(DownloadTest.class);
 
   @Value("${shift.name}")
@@ -62,24 +64,28 @@ public class DownloadTest {
     Assertions.assertTrue(StringUtils.isNotBlank(ver));
   }
 
+  @Step
   private void verifyFileDownload() {
-    int initFilesSize = Objects.requireNonNull(FileUtility.filesMatching(downloadPath.toFile(), pattern)).length;
+    int initFilesSize = FileUtility.filesMatching(downloadPath.toFile(), pattern).length;
+    log.atInfo().log("Initial array size is: " + initFilesSize);
     boolean isFileExist = false;
     while (!isFileExist) {
-      int actualFilesSize = Objects.requireNonNull(FileUtility.filesMatching(downloadPath.toFile(), pattern)).length;
+      int actualFilesSize = FileUtility.filesMatching(downloadPath.toFile(), pattern).length;
       if (actualFilesSize == initFilesSize + 1) {
+        log.atInfo().log("After download array size is: " + actualFilesSize);
         isFileExist = true;
       }
     }
   }
 
+  @Step
   private void checkDownloadProcess() {
-    driver.get("chrome://downloads");
+    driver.get(CHROME_DOWNLOADS_TAB_PATH);
+    log.atInfo().log("Chrome Downloads tab is opened");
     JavascriptExecutor downloadWindowExecutor = (JavascriptExecutor) driver;
     double percentageProgress = 0;
     while (percentageProgress != 100) {
       percentageProgress = (Long) downloadWindowExecutor.executeScript(DOWNLOAD_CHECKER_SCRIPT);
     }
   }
-
 }

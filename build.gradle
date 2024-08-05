@@ -20,6 +20,11 @@ java {
     }
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.add('-parameters')
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -38,16 +43,21 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     agent "org.aspectj:aspectjweaver:$aspectJVer"
+    implementation "io.qameta.allure:allure-assertj:${allureVer}"
     implementation "io.appium:java-client:${appiumJavaVer}"
-    implementation 'org.apache.commons:commons-lang3:3.15.0'
+    implementation "org.apache.commons:commons-lang3:${apacheCommonVer}"
     implementation "io.github.bonigarcia:webdrivermanager:${driverManagerVer}"
     testImplementation "org.seleniumhq.selenium:selenium-java:${seleniumVer}"
     testImplementation "org.slf4j:slf4j-simple:${slf4jVer}"
     testImplementation "org.slf4j:slf4j-api:${slf4jVer}"
+    testImplementation "org.junit.jupiter:junit-jupiter:${junitVer}"
+    testImplementation "io.qameta.allure:allure-junit5:${allureVer}"
 }
 
 test {
-    ignoreFailures = false
     useJUnitPlatform()
-    jvmArgs = ["-javaagent:${configurations.agent.singleFile}"]
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    jvmArgs = [ "-javaagent:${configurations.agent.singleFile}" ]
 }
