@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 import com.ta.test.challenge.utility.DriverWrapper;
 
 @Component
-public class GoogleDocumentComponent {
+public class GoogleDocument {
 
   private static final String RENAME_FIELD = "Rename";
   private static final String DOCUMENT_STATUS = "Document status: Saved to Drive.";
   private final DriverWrapper appDriver;
 
-  public GoogleDocumentComponent(DriverWrapper appDriver) {
+  public GoogleDocument(DriverWrapper appDriver) {
     this.appDriver = appDriver;
   }
 

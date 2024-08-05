@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.ta.test.challenge.component.GoogleAccComponent;
-import com.ta.test.challenge.component.GoogleDocumentComponent;
+import com.ta.test.challenge.component.GoogleAcc;
+import com.ta.test.challenge.component.GoogleDocument;
 import com.ta.test.challenge.config.AppDriverConfig;
 import com.ta.test.challenge.page.ApplicationStorePage;
 import com.ta.test.challenge.page.MainPage;
@@ -43,9 +43,9 @@ public class ShiftTest {
   @Autowired
   private ApplicationStorePage applicationStorePage;
   @Autowired
-  private GoogleAccComponent googleAccComponent;
+  private GoogleAcc googleAcc;
   @Autowired
-  private GoogleDocumentComponent googleDocumentComponent;
+  private GoogleDocument googleDocument;
 
   @Test
   @Order(2)
@@ -86,12 +86,7 @@ public class ShiftTest {
     mainPage.clickGoogleDocsIcon();
     applicationStorePage.inputTextToAccountNameField("Test_Account");
     applicationStorePage.clickToSaveButton();
-    googleAccComponent.clickToLoginField();
-    googleAccComponent.inputTextToLoginField(username);
-    googleAccComponent.clickToNextButton();
-    googleAccComponent.clickToPasswordField();
-    googleAccComponent.inputTextToPasswordField(password);
-    googleAccComponent.clickToNextButton();
+    googleAcc.loginToGoogleAccount(username, password);
     Assertions.assertTrue(mainPage.checkGoogleDocsDisplayed());
     Assertions.assertTrue(mainPage.checkTestAccountDocsDisplayed());
   }
@@ -104,10 +99,10 @@ public class ShiftTest {
     mainPage.clickToAdditionAccount();
     mainPage.clickGoogleDocsIcon();
     mainPage.clickCreateNewDocument();
-    googleDocumentComponent.clickToResumeField();
-    googleDocumentComponent.inputTextToResume(docTitle);
-    googleDocumentComponent.clickEnterOnResumeField(Keys.ENTER);
-    googleDocumentComponent.checkDocumentSavedStatus();
+    googleDocument.clickToResumeField();
+    googleDocument.inputTextToResume(docTitle);
+    googleDocument.clickEnterOnResumeField(Keys.ENTER);
+    googleDocument.checkDocumentSavedStatus();
     mainPage.clickGoBackButton();
     Assertions.assertTrue(mainPage.checkDocumentDisplayed(docTitle));
   }

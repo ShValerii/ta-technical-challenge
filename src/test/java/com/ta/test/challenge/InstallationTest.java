@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.ta.test.challenge.component.GoogleAccComponent;
-import com.ta.test.challenge.component.LoginComponent;
+import com.ta.test.challenge.component.GoogleAcc;
+import com.ta.test.challenge.component.Login;
 import com.ta.test.challenge.config.RootDriverConfig;
 import com.ta.test.challenge.page.InstallAppPage;
 import com.ta.test.challenge.page.MainPage;
@@ -36,11 +36,11 @@ public class InstallationTest {
   @Value("${system.download.path}")
   private File downloadPath;
   @Autowired
-  private GoogleAccComponent googleAccComponent;
+  private GoogleAcc googleAcc;
   @Autowired
   private InstallAppPage installAppPage;
   @Autowired
-  private LoginComponent loginComponent;
+  private Login login;
   @Autowired
   private MainPage mainPage;
 
@@ -63,17 +63,12 @@ public class InstallationTest {
     installAppPage.clickNextButton();
     installAppPage.clickInstallButton();
     installAppPage.clickFinishButton();
-    loginComponent.clickToTermsOfConditionField();
-    loginComponent.clickSignWithGoogleButton();
-    googleAccComponent.clickToLoginField();
-    googleAccComponent.inputTextToLoginField(username);
-    googleAccComponent.clickToNextButton();
-    googleAccComponent.clickToPasswordField();
-    googleAccComponent.inputTextToPasswordField(password);
-    googleAccComponent.clickToNextButton();
-    googleAccComponent.clickContinueButton();
-    googleAccComponent.clickSelectAllField();
-    googleAccComponent.clickContinueButton();
+    login.clickToTermsOfConditionField();
+    login.clickSignWithGoogleButton();
+    googleAcc.loginToGoogleAccount(username, password);
+    googleAcc.clickContinueButton();
+    googleAcc.clickSelectAllField();
+    googleAcc.clickContinueButton();
     Assertions.assertTrue(mainPage.checkAddToShiftButton());
   }
 }

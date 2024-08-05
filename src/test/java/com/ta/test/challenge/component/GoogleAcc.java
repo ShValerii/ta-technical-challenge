@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import com.ta.test.challenge.utility.DriverWrapper;
 
 @Component
-public class GoogleAccComponent {
+public class GoogleAcc {
 
   private static final String LOGIN_FIELD = "//*[@AutomationId='identifierId']";
   private static final String NEXT_BUTTON = "Next";
@@ -15,7 +15,7 @@ public class GoogleAccComponent {
   private static final String SELECT_ALL_FIELD = "//*[@AutomationId='i1']";
   private final DriverWrapper appDriver;
 
-  public GoogleAccComponent(DriverWrapper appDriver) {
+  public GoogleAcc(DriverWrapper appDriver) {
     this.appDriver = appDriver;
   }
 
@@ -45,5 +45,14 @@ public class GoogleAccComponent {
 
   public void clickSelectAllField() {
     appDriver.waitForElement(By.xpath(SELECT_ALL_FIELD)).click();
+  }
+
+  public void loginToGoogleAccount(String username, String password) {
+    clickToLoginField();
+    inputTextToLoginField(username);
+    clickToNextButton();
+    clickToPasswordField();
+    inputTextToPasswordField(password);
+    clickToNextButton();
   }
 }
