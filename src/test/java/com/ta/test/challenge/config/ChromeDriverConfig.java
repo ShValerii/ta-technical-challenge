@@ -1,39 +1,25 @@
 package com.ta.test.challenge.config;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import com.ta.test.challenge.driver.ChromeDriverFactory;
+import com.ta.test.challenge.driver.DriverWrapper;
 
 @Configuration
+@ComponentScan(basePackages = {
+    "com.ta.test.challenge.component",
+    "com.ta.test.challenge.page",
+    "com.ta.test.challenge.driver"})
 public class ChromeDriverConfig {
 
-  @Bean
-  public WebDriver chromeDriver() {
-    WebDriver driver;
-    WebDriverManager.chromedriver().setup();
-    Map<String, Object> prefs = new HashMap<String, Object>();
-    //TODO create constants
-    prefs.put("download.prompt_for_download", false);
-    prefs.put("safebrowsing.enabled", true);
-    prefs.put("download.directory_upgrade", true);
-    prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
+  @Value("${winappdriver.timeout}")
+  private long timeout;
 
-    ChromeOptions options = new ChromeOptions();
-    options.setExperimentalOption("prefs", prefs);
-    options.addArguments("--remote-allow-origins=*");
-    options.addArguments("--safebrowsing-disable-download-protection");
-    driver = new ChromeDriver(options);
-    driver.manage().window().maximize();
-    driver.manage().timeouts().implicitlyWait(2000L, TimeUnit.MILLISECONDS);
-    driver.manage().timeouts().pageLoadTimeout(5000L, TimeUnit.MILLISECONDS);
-    return driver;
+  @Bean
+  public DriverWrapper chromeDriver(ChromeDriverFactory chromeDriverFactory) {
+    return new DriverWrapper(timeout, chromeDriverFactory);
   }
 }

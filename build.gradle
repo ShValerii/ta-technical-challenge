@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'io.qameta.allure' version '2.9.6'
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
@@ -37,8 +38,6 @@ configurations {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -52,6 +51,10 @@ dependencies {
     testImplementation "org.slf4j:slf4j-api:${slf4jVer}"
     testImplementation "org.junit.jupiter:junit-jupiter:${junitVer}"
     testImplementation "io.qameta.allure:allure-junit5:${allureVer}"
+}
+
+allure {
+    version = '2.13.0'
 }
 
 test {

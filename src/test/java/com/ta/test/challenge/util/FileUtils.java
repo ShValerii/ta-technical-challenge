@@ -1,24 +1,29 @@
-package com.ta.test.challenge.utility;
+package com.ta.test.challenge.util;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
-public final class FileUtility {
+public final class FileUtils {
 
-  public static String extractFileVersion(File root, Pattern p) {
-    if (!root.isDirectory()) {
+  public static final Pattern SHIFT_VERSION_PATTERN = Pattern.compile("^shift-v(\\d+.\\d+.\\d+.\\d+).*$");
+
+  public static String extractShiftFileVersion(File root) {
+    if (root == null || !root.isDirectory()) {
       throw new IllegalArgumentException(root + " is no directory.");
     }
-    File[] files = root.listFiles(f -> p.matcher(f.getName()).matches());
-    if (files != null && files.length > 0) {
-      return files[0].getName().split("-")[1].substring(1);
-    } else {
-      return "";
-    }
+    return Stream.of(root.listFiles()).map(file -> {
+      var matcher = SHIFT_VERSION_PATTERN.matcher(file.getName());
+      if (matcher.matches()) {
+        return matcher.group(1);
+      }
+      return null;
+    }).filter(Objects::nonNull).findAny().orElse("");
   }
 
   public static File firstFileMatching(File root, Pattern p) {
-    if (!root.isDirectory()) {
+    if (root == null || !root.isDirectory()) {
       throw new IllegalArgumentException(root + " is no directory.");
     }
     File[] files = root.listFiles(f -> p.matcher(f.getName()).matches());
@@ -26,7 +31,7 @@ public final class FileUtility {
   }
 
   public static File[] filesMatching(File root, Pattern p) {
-    if (!root.isDirectory()) {
+    if (root == null || !root.isDirectory()) {
       throw new IllegalArgumentException(root + " is no directory.");
     }
     File[] files = root.listFiles(f -> p.matcher(f.getName()).matches());

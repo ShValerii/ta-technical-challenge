@@ -1,14 +1,12 @@
 winappdriver:
   url: "http://127.0.0.1:4723"
   timeout: 20
+  app: "%LocalAppData%\\Programs\\Shift\\shift.exe"
 
 shift:
-  path: "C:\\Users\\Valerii\\AppData\\Local\\Programs\\Shift\\shift.exe"
   username: "tset.acc.lol@gmail.com"
   password: "@*7DurU#*5BHGY"
-  name: "shift"
   url: "http://shift.com/"
-  install.cmd: "cmd /k \"${filePath} \""
 
 system:
   download.path: "D:\\Input\\"

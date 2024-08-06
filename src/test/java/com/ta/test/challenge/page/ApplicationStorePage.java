@@ -3,7 +3,9 @@ package com.ta.test.challenge.page;
 import org.openqa.selenium.By;
 import org.springframework.stereotype.Component;
 
-import com.ta.test.challenge.utility.DriverWrapper;
+import com.ta.test.challenge.driver.DriverWrapper;
+
+import io.qameta.allure.Step;
 
 @Component
 public class ApplicationStorePage {
@@ -17,23 +19,44 @@ public class ApplicationStorePage {
     this.appDriver = appDriver;
   }
 
-  public void selectSearchField() {
+  @Step
+  public void installApp(String appName, String accName) {
+    selectSearchField();
+    clickToSearchField();
+    inputTextToSearchField(appName);
+    clickToSearchField();
+    clickAppIcon(appName);
+    inputTextToAccountNameField(accName);
+    clickToSaveButton();
+  }
+
+  @Step
+  private void selectSearchField() {
     appDriver.waitForElement(By.xpath(SEARCH_FIELD)).isSelected();
   }
 
-  public void inputTextToSearchField(String text) {
+  @Step
+  private void inputTextToSearchField(String text) {
     appDriver.waitForElement(By.xpath(SEARCH_FIELD)).sendKeys(text);
   }
 
-  public void clickToSearchField() {
+  @Step
+  private void clickToSearchField() {
     appDriver.waitForElement(By.xpath(SEARCH_FIELD)).click();
   }
 
-  public void inputTextToAccountNameField(String text) {
+  @Step
+  private void inputTextToAccountNameField(String text) {
     appDriver.waitForElement(By.name(ACCOUNT_NAME_FIELD)).sendKeys(text);
   }
 
-  public void clickToSaveButton() {
+  @Step
+  private void clickToSaveButton() {
     appDriver.waitForElement(By.name(SAVE_BUTTON)).click();
+  }
+
+  @Step
+  private void clickAppIcon(String appName) {
+    appDriver.waitForElement(By.name(appName)).click();
   }
 }

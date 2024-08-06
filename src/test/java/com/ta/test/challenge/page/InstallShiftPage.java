@@ -3,10 +3,12 @@ package com.ta.test.challenge.page;
 import org.openqa.selenium.By;
 import org.springframework.stereotype.Component;
 
-import com.ta.test.challenge.utility.DriverWrapper;
+import com.ta.test.challenge.driver.DriverWrapper;
+
+import io.qameta.allure.Step;
 
 @Component
-public class InstallAppPage {
+public class InstallShiftPage {
 
   private static final String NEXT_BUTTON = "Next";
   private static final String INSTALL_BUTTON = "Install";
@@ -15,23 +17,35 @@ public class InstallAppPage {
 
   private final DriverWrapper rootDriver;
 
-  public InstallAppPage(DriverWrapper rootDriver) {
+  public InstallShiftPage(DriverWrapper rootDriver) {
     this.rootDriver = rootDriver;
   }
 
-  public void clickInstallOnlyMeButton() {
+  @Step
+  public void installShift() {
+    clickInstallOnlyMeButton();
+    clickNextButton();
+    clickInstallButton();
+    clickFinishButton();
+  }
+
+  @Step
+  private void clickInstallOnlyMeButton() {
     rootDriver.waitForElement(By.name(INSTALL_ONLY_ME_BUTTON)).click();
   }
 
-  public void clickNextButton() {
+  @Step
+  private void clickNextButton() {
     rootDriver.waitForElement(By.name(NEXT_BUTTON)).click();
   }
 
-  public void clickInstallButton() {
+  @Step
+  private void clickInstallButton() {
     rootDriver.waitForElement(By.name(INSTALL_BUTTON)).click();
   }
 
-  public void clickFinishButton(){
+  @Step
+  private void clickFinishButton() {
     rootDriver.waitForElement(By.name(FINISH_BUTTON)).click();
   }
 }
