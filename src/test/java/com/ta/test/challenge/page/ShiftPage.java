@@ -50,7 +50,6 @@ public class ShiftPage {
 
   @Step
   public void openApp(String workspace, String appName) {
-    checkWorkspaceDisplayed(workspace);
     clickToWorkspace(workspace);
     clickAppIcon(appName);
   }

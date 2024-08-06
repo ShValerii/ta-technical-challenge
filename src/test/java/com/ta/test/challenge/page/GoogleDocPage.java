@@ -12,6 +12,7 @@ import io.qameta.allure.Step;
 public class GoogleDocPage {
 
   private static final String RENAME_FIELD = "Rename";
+  private static final String RELOAD_BUTTON = "Reload";
   private static final String DOCUMENT_STATUS = "Document status: Saved to Drive.";
   private static final String CREATE_DOCUMENT_BUTTON = "//MenuItem[@Name='Create new document']";
   private final DriverWrapper appDriver;
@@ -30,12 +31,8 @@ public class GoogleDocPage {
 
   @Step
   public void createNewDocument() {
-    try {
-      //TODO Require deep investigation. Test without this "sleep" is unstable.
-      Thread.sleep(10_000L);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    }
+    // Without this reload the test is unstable.
+    appDriver.waitForElement(By.name(RELOAD_BUTTON)).click();
     appDriver.waitForElement(By.xpath(CREATE_DOCUMENT_BUTTON)).click();
   }
 
