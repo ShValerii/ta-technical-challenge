@@ -1,6 +1,6 @@
 winappdriver:
   url: "http://127.0.0.1:4723"
-  timeout: 20
+  timeout: 30
   app: "${LOCALAPPDATA}\\Programs\\Shift\\shift.exe"
 
 shift:

@@ -26,14 +26,18 @@ WinAppDriver 1.2.1, Install instructions provided below. <br>
 
 > #### Note: You need to create your own Google test account to use Shift.
 > #### Also, you need to update credentials and download path in the src/test/resources/application.yml.
-> #### `download.path` should be the same as configured in the System and where Chrome download files by default.
-> #### If this path is different from `%USERPROFILE%\Downloads`, please add the full actual path. 
-> #### You can check it copy and past to the File Explorer and clicking the Enter button.
+> #### `download.path` should be a target directory(not a symlink) that points to the folder where Chrome downloads files by default.
+> #### If this path is different from `%USERPROFILE%\Downloads`, please set the full actual path. 
+> #### You can check it by copying and pasting this path to the File Explorer's address line and clicking on the Enter button.
 
-## Project Setup
+## Project setup
 ### Clone the repository:
+```bash
 git clone https://github.com/ShValerii/ta-technical-challenge.git
+```
+```bash
 cd ta-technical-challenge
+```
 
 ## Install WinAppDriver
 1. Download Windows Application Driver installer from <https://github.com/Microsoft/WinAppDriver/releases>
@@ -50,16 +54,14 @@ WinAppDriver.exe 10.0.0.10 4725
 WinAppDriver.exe 10.0.0.10 4723/wd/hub
 ```
 
-## General Development & Best Practices
-[Writing tests guide](https://github.com/microsoft/WinAppDriver/blob/master/Docs/FAQ.md#general-development--best-practices)
+## Used practices and methodologies
+[WinAppDriver Development & Best Practices](https://github.com/microsoft/WinAppDriver/blob/master/Docs/FAQ.md#general-development--best-practices)
 
 To correctly configure WinAppDriver, you need to pass `AppID` to `app` capability. This field is key-sensitive.
-If you would like to operate a whole OS, you should use `Root`.
-To operate other apps, you should find their `AppID` by running next PowerShell command:
+To operate on a whole OS level, please, use `Root` instead. To operate other apps, you should find their `AppID` by running the next PowerShell command:
 ~~~shell
 get-StartApps
 ~~~
-And find `AppID` by the application name.
 
 ## Run WinAppDriver.exe:
 ```bash
@@ -79,60 +81,57 @@ More details about this tool and Windows SDK, you can find by the links:
 [Inspect app description.](https://learn.microsoft.com/en-us/windows/win32/winauto/inspect-objects) <br>
 [Windows SDK description and download.](https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/)
 
-## Check ApplicationID names 
-To run 
+## Run tests:
 
-## Run all tests:
-
-> Note: Before run the test you should run the WinAppDriver.
-
-> Note: Before run test, you should be in the Project root directory.
-### Run all test
+> Note: Before running the tests you should launch WinAppDriver and be in the project's root directory.
+> Note: Please don't move a mouse or press any keys while tests are running.
+### Run all tests
 ```bash
 .\gradlew clean test
 ```
-### Run all test with INFO log level
+### Run all tests with INFO log level
 ```bash
 .\gradlew clean test -info
 ```
-## Generate Test Report
-To generate Allure report, please, run the next command:
+## Generate a test report
+To generate the Allure report, please, run the command:
 ```bash
 .\gradlew allureReport
 ```
-Files to generate report will be saved to the:
+Raw report files will be placed to the:
 ```
 build/allure-results
 ```
-> Note: If you want to change this folder, you can edit this path in the next file: allure.properties file.
+> Note: To change this folder you can edit its path in the allure.properties file.
 
 ```
 src/test/resources/allure.properties
 ```
 
-After command done, you can find the Allure report in the next folder:
+After the `.\gradlew allureReport` command is completed, you can find the Allure report in the next folder:
 ```
 build/reports/allure-report
 ```
-To open it manually, please, open `index.html` file in any internet browser.
-Or you can use next command, but after watching you should to close local web server in console 
+You can open it manually using IntelliJ IDEA, by clicking the right mouse button at `index.html` and choosing `Open In -> Browser` and select any internet browser.
+Also, you can use the next command:
 ```bash
 .\gradlew allureServe
 ```
+> Note: Do not forget to close your local web server in console after.
 
-## Open saved Allure report
+## Export Allure report
 ### Install Allure CLI:
 [Install Allure Report for Windows guide](https://allurereport.org/docs/install-for-windows/)
 
 ### Open saved report
 [How to open saved report guide](https://allurereport.org/docs/gettingstarted-view-report/)
 
-### Save report
-To save the Allure report as artifact, you should go to folder, where generated Allure report.
-In this project, by-default, it's next folder:
+### Export report artifact
+To export a report, you should go to the folder, where generated reports are stored.
+By default, it's the next folder:
 ```
 build/reports/allure-report
 ```
-Find the last allure-report folder,that contain actual files, rename as suite you, and add it to the .zip archive.
+Find the last allure-report folder, that contains `index.html` file, and archive the folder (for example as a .zip archive).
 
 

@@ -24,6 +24,8 @@ import com.ta.test.challenge.page.SettingsPage;
 import com.ta.test.challenge.page.ShiftPage;
 import com.ta.test.challenge.util.FileUtils;
 
+import io.qameta.allure.Allure;
+
 @SpringBootTest
 @ContextConfiguration(classes = AppDriverConfig.class)
 @TestMethodOrder(OrderAnnotation.class)
@@ -65,6 +67,8 @@ public class ShiftTest {
     shiftPage.openSettings();
     String actualVer = settingsPage.extractVersion();
     log.atInfo().log("Installed Shift version is: " + actualVer);
+    Allure.attachment("version", "Downloaded Shift version is: " + downloadedVer);
+    Allure.attachment("version", "Installed Shift version is: " + actualVer);
     Assertions.assertEquals(downloadedVer, actualVer);
   }
 
@@ -73,6 +77,7 @@ public class ShiftTest {
   public void createNewWorkspace() {
     shiftPage.createNewWorkspace(WORKSPACE);
     log.atInfo().log("Created new workspace: " + WORKSPACE);
+    Allure.attachment("Workspace Name", "Created new workspace: " + WORKSPACE);
     Assertions.assertTrue(shiftPage.checkWorkspaceDisplayed(WORKSPACE));
   }
 
@@ -83,6 +88,7 @@ public class ShiftTest {
     shiftPage.openAppStore(WORKSPACE);
     applicationStorePage.installApp(appName, "Test_Account");
     log.atInfo().log("Installed " + appName + " application.");
+    Allure.attachment("Application Name", "Installed " + appName + " application.");
     googleAccount.simpleLogin(username, password);
     Assertions.assertTrue(shiftPage.checkAppIconDisplayed(appName));
     Assertions.assertTrue(shiftPage.checkTestAccountDocsDisplayed());
@@ -97,6 +103,7 @@ public class ShiftTest {
     googleDocPage.createNewDocument();
     googleDocPage.renameDocument(docTitle);
     log.atInfo().log("Renamed document to: " + docTitle);
+    Allure.attachment("Document Title", "Created a new document: " + docTitle);
     shiftPage.goBack();
     Assertions.assertTrue(shiftPage.checkDocumentDisplayed(docTitle));
   }

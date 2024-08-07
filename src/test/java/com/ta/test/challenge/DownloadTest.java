@@ -18,6 +18,7 @@ import com.ta.test.challenge.config.ChromeDriverConfig;
 import com.ta.test.challenge.driver.DriverWrapper;
 import com.ta.test.challenge.util.FileUtils;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 
 @SpringBootTest(classes = ChromeDriverConfig.class)
@@ -52,6 +53,7 @@ public class DownloadTest {
     Assertions.assertTrue(verifyFileDownload(), "File don't downloaded.");
     String ver = FileUtils.extractShiftFileVersion(downloadPath.toFile());
     log.atInfo().log("Downloaded version is: " + ver);
+    Allure.attachment("version", "Downloaded version is: " + ver);
     Assertions.assertTrue(StringUtils.isNotBlank(ver));
   }
 
@@ -63,7 +65,7 @@ public class DownloadTest {
     long end = start + timeout * 1000;
     while (System.currentTimeMillis() < end) {
       int actualFilesSize = FileUtils.filesMatching(downloadPath.toFile(), pattern).length;
-      if (actualFilesSize == initFilesSize + 1) {
+      if (actualFilesSize == initFilesSize + 1) { //check that a new file was downloaded
         log.atInfo().log("After download array size is: " + actualFilesSize);
         return true;
       }
