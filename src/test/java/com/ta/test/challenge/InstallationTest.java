@@ -52,14 +52,16 @@ public class InstallationTest {
 
   @Test
   public void installApplication() throws IOException, InterruptedException {
+    log.atInfo().log("Download path is: " + downloadPath);
+    log.atInfo().log("Pattern to search the file: " + FileUtils.SHIFT_VERSION_PATTERN);
     File file = FileUtils.firstFileMatching(downloadPath, FileUtils.SHIFT_VERSION_PATTERN);
     Assertions.assertNotNull(file);
     URL url = Thread.currentThread().getContextClassLoader().getResource(INSTALLATION_SCRIPT);
     File batFile = new File(Objects.requireNonNull(url).getPath());
     Process p = Runtime.getRuntime().exec(batFile.getAbsolutePath() + " " + file.getAbsolutePath());
+    log.atInfo().log("Running .bat file from: " + batFile.getAbsolutePath() + " " + file.getAbsolutePath());
     p.waitFor();
     log.atInfo().log("Batch file executed successfully.");
-
     installShiftPage.installShift();
     login.loginToShift(username, password);
     Assertions.assertTrue(shiftPage.checkMainAccountDisplayed());

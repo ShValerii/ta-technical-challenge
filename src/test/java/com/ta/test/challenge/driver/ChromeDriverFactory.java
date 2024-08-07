@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -24,6 +26,7 @@ public class ChromeDriverFactory implements DriverFactory {
   private static final String SAFE_BROWSING_DISABLING_ARG = "--safebrowsing-disable-download-protection";
   private static final long IMPLICITLY_WAIT = 2000L;
   private static final long PAGE_LOAD_TIMEOUT = 5000L;
+  private final Logger log = LoggerFactory.getLogger(ChromeDriverFactory.class);
 
   @Override
   public WebDriver createDriver() {
@@ -42,6 +45,7 @@ public class ChromeDriverFactory implements DriverFactory {
     driver.manage().window().maximize();
     driver.manage().timeouts().implicitlyWait(IMPLICITLY_WAIT, TimeUnit.MILLISECONDS);
     driver.manage().timeouts().pageLoadTimeout(PAGE_LOAD_TIMEOUT, TimeUnit.MILLISECONDS);
+    log.atInfo().log("Created ChromeDriver.");
     return driver;
   }
 }

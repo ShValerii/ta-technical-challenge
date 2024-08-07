@@ -72,6 +72,7 @@ public class ShiftTest {
   @Order(4)
   public void createNewWorkspace() {
     shiftPage.createNewWorkspace(WORKSPACE);
+    log.atInfo().log("Created new workspace: " + WORKSPACE);
     Assertions.assertTrue(shiftPage.checkWorkspaceDisplayed(WORKSPACE));
   }
 
@@ -81,6 +82,7 @@ public class ShiftTest {
     String appName = "Google Docs";
     shiftPage.openAppStore(WORKSPACE);
     applicationStorePage.installApp(appName, "Test_Account");
+    log.atInfo().log("Installed " + appName + " application.");
     googleAccount.simpleLogin(username, password);
     Assertions.assertTrue(shiftPage.checkAppIconDisplayed(appName));
     Assertions.assertTrue(shiftPage.checkTestAccountDocsDisplayed());
@@ -91,8 +93,10 @@ public class ShiftTest {
   public void createNewGoogleDoc() {
     String docTitle = "Test Document";
     shiftPage.openApp(WORKSPACE, "Google Docs - Test_Account");
+    log.atInfo().log("Opened workspace " + WORKSPACE);
     googleDocPage.createNewDocument();
     googleDocPage.renameDocument(docTitle);
+    log.atInfo().log("Renamed document to: " + docTitle);
     shiftPage.goBack();
     Assertions.assertTrue(shiftPage.checkDocumentDisplayed(docTitle));
   }

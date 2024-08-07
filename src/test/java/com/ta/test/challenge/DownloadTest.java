@@ -42,6 +42,7 @@ public class DownloadTest {
     if (driverWrapper.getDriver() != null) {
       driverWrapper.getDriver().close();
     }
+    log.atInfo().log("Driver is closed.");
   }
 
   @Test
