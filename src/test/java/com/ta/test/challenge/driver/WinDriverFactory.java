@@ -21,7 +21,6 @@ public class WinDriverFactory implements DriverFactory {
   private static final String WAIT_FOR_APP_LAUNCH = "ms:waitForAppLaunch";
   private static final int LAUNCH_TIMEOUT = 10;
   private static final long WAIT_TIME = 2000L;
-  private static final String LOCAL_APP_DATA = "%LocalAppData%";
 
   @Value("${winappdriver.url}")
   private String driverURL;
@@ -30,10 +29,8 @@ public class WinDriverFactory implements DriverFactory {
 
   @Override
   public WebDriver createDriver() {
-    String localAppData = System.getenv("LOCALAPPDATA");
-    String appPath = appName.replace(LOCAL_APP_DATA, localAppData);
     DesiredCapabilities capabilities = new DesiredCapabilities();
-    capabilities.setCapability(APP, appPath);
+    capabilities.setCapability(APP, appName);
     capabilities.setCapability(AUTOMATION_NAME, WINDOWS);
     capabilities.setCapability(WAIT_FOR_APP_LAUNCH, String.valueOf(LAUNCH_TIMEOUT));
 

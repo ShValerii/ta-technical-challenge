@@ -19,16 +19,16 @@ document was created with the title</li>
 
 ## Ensure you have the following installed:
 Java 11 (corretto) [Installation guide](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/windows-install.html) <br>
-Gradle 7.6.4 [General installation guide](https://gradle.org/install/) <br>
-Node JS 18+ [Installation guide](https://nodejs.org/en/download/package-manager) <br>
-npm 8+ npm should be installed as part of Node.js, but if it's not happen, [Install guide](https://docs.npmjs.com/cli/v10/commands/npm-install) <br>
-Appium [Installation guide](https://appium.io/docs/en/2.6/quickstart/install/) <br>
+Gradle 7.6.4 [Installation guide](https://gradle.org/install/) <br>
+Chrome  browser [Installation guide](https://www.google.com/intl/en_ca/chrome/dr/download/) <br>
 WinAppDriver 1.2.1, Install instructions provided below. <br>
 
 
-> #### Note: You need to create you own Google test account to use Shift.
+> #### Note: You need to create your own Google test account to use Shift.
 > #### Also, you need to update credentials and download path in the src/test/resources/application.yml.
-> #### `download.path` should be the same as configured in the Chrome default download path settings.
+> #### `download.path` should be the same as configured in the System and where Chrome download files by default.
+> #### If this path is different from `%USERPROFILE%\Downloads`, please add the full actual path. 
+> #### You can check it copy and past to the File Explorer and clicking the Enter button.
 
 ## Project Setup
 ### Clone the repository:
@@ -50,6 +50,17 @@ WinAppDriver.exe 10.0.0.10 4725
 WinAppDriver.exe 10.0.0.10 4723/wd/hub
 ```
 
+## General Development & Best Practices
+[Writing tests guide](https://github.com/microsoft/WinAppDriver/blob/master/Docs/FAQ.md#general-development--best-practices)
+
+To correctly configure WinAppDriver, you need to pass `AppID` to `app` capability. This field is key-sensitive.
+If you would like to operate a whole OS, you should use `Root`.
+To operate other apps, you should find their `AppID` by running next PowerShell command:
+~~~shell
+get-StartApps
+~~~
+And find `AppID` by the application name.
+
 ## Run WinAppDriver.exe:
 ```bash
 start "C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe"
@@ -68,6 +79,8 @@ More details about this tool and Windows SDK, you can find by the links:
 [Inspect app description.](https://learn.microsoft.com/en-us/windows/win32/winauto/inspect-objects) <br>
 [Windows SDK description and download.](https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/)
 
+## Check ApplicationID names 
+To run 
 
 ## Run all tests:
 
@@ -92,6 +105,7 @@ Files to generate report will be saved to the:
 build/allure-results
 ```
 > Note: If you want to change this folder, you can edit this path in the next file: allure.properties file.
+
 ```
 src/test/resources/allure.properties
 ```
@@ -101,4 +115,24 @@ After command done, you can find the Allure report in the next folder:
 build/reports/allure-report
 ```
 To open it manually, please, open `index.html` file in any internet browser.
+Or you can use next command, but after watching you should to close local web server in console 
+```bash
+.\gradlew allureServe
+```
+
+## Open saved Allure report
+### Install Allure CLI:
+[Install Allure Report for Windows guide](https://allurereport.org/docs/install-for-windows/)
+
+### Open saved report
+[How to open saved report guide](https://allurereport.org/docs/gettingstarted-view-report/)
+
+### Save report
+To save the Allure report as artifact, you should go to folder, where generated Allure report.
+In this project, by-default, it's next folder:
+```
+build/reports/allure-report
+```
+Find the last allure-report folder,that contain actual files, rename as suite you, and add it to the .zip archive.
+
 

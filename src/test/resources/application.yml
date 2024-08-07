@@ -1,7 +1,7 @@
 winappdriver:
   url: "http://127.0.0.1:4723"
   timeout: 20
-  app: "%LocalAppData%\\Programs\\Shift\\shift.exe"
+  app: "${LOCALAPPDATA}\\Programs\\Shift\\shift.exe"
 
 shift:
   username: "tset.acc.lol@gmail.com"
@@ -9,5 +9,5 @@ shift:
   url: "http://shift.com/"
 
 system:
-  download.path: "D:\\Input\\"
+  download.path: "${USERPROFILE}\\Downloads"
 
